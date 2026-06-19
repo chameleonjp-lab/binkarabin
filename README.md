@@ -8,11 +8,12 @@
 
 ## 操作方法
 
-1. 移し元のビンをタップします。
-2. 移し先のビンをタップします。
-3. 移せる場合だけ、上に連続している同色の層を空き容量の範囲でまとめて移します。
+1. 名前入力後、ゲーム画面で「3、2、1、スタート」のカウントダウンを待ちます。
+2. スタート後に移し元のビンをタップします。
+3. 移し先のビンをタップします。
+4. 移せる場合だけ、上に連続している同色の層を空き容量の範囲でまとめて移します。
 
-同じビンをもう一度タップすると選択解除できます。取り消しボタンで1手戻せます。リタイア時は確認後に結果画面へ進みますが、ランキング送信は行いません。
+カウントダウン中はタイマーが進まず、ビン操作も受け付けません。同じビンをもう一度タップすると選択解除できます。取り消しボタンで1手戻せます。リタイア時は確認後に結果画面へ進みますが、ランキング送信は行いません。
 
 ## ランキング仕様
 
@@ -21,7 +22,10 @@
 - 表示: 秒、小数3桁
 - 順位: 小さい値ほど上位 (`asc`)
 - ランキング型: ベストスコア型
-- 使用テーブル/RPC: `public.games`, `public.game_scores`, `get_best_score_ranking`, `get_game_play_stats`
+- 送信RPC: `submit_score`
+- ランキング取得RPC: `get_best_score_ranking`
+- 補助RPC: `get_game_play_stats`
+- 使用テーブル/RPC: `public.games`, `public.game_scores`, `submit_score`, `get_best_score_ranking`, `get_game_play_stats`
 - `public.scores` は使用しません。
 
 ## Supabase 登録メモ
@@ -37,4 +41,4 @@ https://chameleonjp.codeberg.page/binkarabin/",asc,秒,1000,3,クリアタイム
 
 ## 実装メモ
 
-公開URLは `index.html` 内の `GAME_URL` 定数1箇所で管理しています。ランキング送信は結果画面へ入った後に自動で1回だけ実行し、リタイア時は実行しません。Supabase の secret key / service_role key は使いません。
+公開URLは `index.html` 内の `GAME_URL` 定数1箇所で管理しています。他ゲーム導線は `https://chameleonjp.codeberg.page/chameleonjp_lab/` へ遷移します。ランキング送信は結果画面へ入った後に `submit_score` で自動で1回だけ実行し、送信値はミリ秒整数、表示は秒・小数3桁です。リタイア時は実行しません。Supabase は Publishable key を使用し、secret key / service_role key は使いません。
