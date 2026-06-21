@@ -46,9 +46,30 @@ function layoutBottles(w,h){state.rects=[];const top=24,bottom=40,rowGap=34,colG
 function stopActiveLoops(){state.runId++;if(state.rafId){cancelAnimationFrame(state.rafId);state.rafId=0}if(state.countdownTimerId){clearTimeout(state.countdownTimerId);state.countdownTimerId=0}}
 function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
 function isSolved(bottles){return bottles.every(b=>!b.length||(b.length===BOTTLE_CAPACITY&&b.every(c=>c===b[0])))}
-function hasAnyMoveFor(bottles){for(let i=0;i<bottles.length;i++){if(!bottles[i].length)continue;for(let j=0;j<bottles.length;j++){if(i!==j&&canPour(bottles[i],bottles[j])[0])return true}}return false}
-function isGoodInitialStage(bottles){if(isSolved(bottles)||!hasAnyMoveFor(bottles))return false;let solvedBottleCount=0,adjacentSameCount=0;for(const b of bottles){if(b.length===BOTTLE_CAPACITY&&b.every(c=>c===b[0]))solvedBottleCount++;for(let i=1;i<b.length;i++){if(b[i]===b[i-1])adjacentSameCount++}}return solvedBottleCount<=1&&adjacentSameCount<=8}
-function generateStage(){let fallback=null;for(let attempt=0;attempt<200;attempt++){const layers=[];for(const color of ACTIVE_COLORS){for(let i=0;i<BOTTLE_CAPACITY;i++)layers.push(color)}shuffle(layers);const bottles=[];for(let i=0;i<COLOR_COUNT;i++)bottles.push(layers.slice(i*BOTTLE_CAPACITY,(i+1)*BOTTLE_CAPACITY));for(let i=0;i<EMPTY_BOTTLE_COUNT;i++)bottles.push([]);shuffle(bottles);if(!fallback)fallback=cloneBottles(bottles);if(isGoodInitialStage(bottles))return bottles}return fallback}
+const BASE_STAGE_20=[
+  ['red','blue','yellow','green'],
+  ['red','blue','yellow','green'],
+  ['red','blue','yellow','green'],
+  ['red','blue','yellow','green'],
+  ['purple','orange','cyan','pink'],
+  ['purple','orange','cyan','pink'],
+  ['purple','orange','cyan','pink'],
+  ['purple','orange','cyan','pink'],
+  ['lime','brown','navy','teal'],
+  ['lime','brown','navy','teal'],
+  ['lime','brown','navy','teal'],
+  ['lime','brown','navy','teal'],
+  ['gray','rose','amber','mint'],
+  ['gray','rose','amber','mint'],
+  ['gray','rose','amber','mint'],
+  ['gray','rose','amber','mint'],
+  [],
+  [],
+  [],
+  []
+];
+function validateBaseStage(stage){if(!Array.isArray(stage))return false;if(stage.length!==BOTTLE_COUNT)return false;let emptyCount=0;const counts={};for(const bottle of stage){if(!Array.isArray(bottle))return false;if(bottle.length>BOTTLE_CAPACITY)return false;if(bottle.length===0)emptyCount++;for(const color of bottle){counts[color]=(counts[color]||0)+1}}if(emptyCount!==EMPTY_BOTTLE_COUNT)return false;for(const color of ACTIVE_COLORS){if(counts[color]!==BOTTLE_CAPACITY)return false}return true}
+function generateStage(){if(!validateBaseStage(BASE_STAGE_20))console.warn('BASE_STAGE_20 is invalid');const bottles=cloneBottles(BASE_STAGE_20);shuffle(bottles);return bottles}
 function startGame(){stopActiveLoops();state.bottles=generateStage();state.selectedBottleIndex=null;state.moveCount=0;state.startTime=0;state.elapsedMs=0;state.finished=false;state.retired=false;state.submitted=false;state.undoStack=[];state.effects=[];updateHud(true);showScreen('game');state.mode='READY';draw();startCountdown(state.runId);}
 function startCountdown(runId){const labels=['3','2','1','スタート'];let index=0;const step=()=>{if(runId!==state.runId||state.finished||state.mode!=='READY')return;setStatus(labels[index]);draw();index++;if(index<labels.length){state.countdownTimerId=setTimeout(step,1000);return}state.countdownTimerId=setTimeout(()=>{if(runId!==state.runId||state.finished||state.mode!=='READY')return;state.mode='PLAYING';state.startTime=performance.now();state.elapsedMs=0;updateHud(true);setStatus('移し元のビンをタップ');tick(runId);draw();},700)};step()}
 function tick(runId=state.runId){if(runId!==state.runId||state.mode!=='PLAYING'||state.finished)return;state.elapsedMs=performance.now()-state.startTime;updateHud();state.rafId=requestAnimationFrame(()=>tick(runId))}function updateHud(force=false){const t=fmt(state.elapsedMs);if(force||t!==state.lastTimerText){el.timeLabel.textContent=t;state.lastTimerText=t}el.moveLabel.textContent=state.moveCount+'手';if(el.undoBtn)el.undoBtn.disabled=!(state.mode==='PLAYING'&&state.undoStack.length>0)}
