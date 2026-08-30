@@ -54,4 +54,4 @@ https://chameleonjp.codeberg.page/binkarabin/",asc,秒,1000,3,クリアタイム
 
 ## 実装メモ
 
-公開URLは `index.html` 内の `GAME_URL` 定数1箇所で管理しています。他ゲーム導線は `https://chameleonjp.codeberg.page/chameleonjp_lab/` へ遷移します。ランキング送信は結果画面へ入った後に `submit_score` で自動で1回だけ実行し、送信値はミリ秒整数、表示は秒・小数3桁です。リタイア時は実行しません。Supabase は Publishable key を使用し、secret key / service_role key は使いません。
+公開URLは `index.html` 内の `GAME_URL` 定数1箇所で管理しています。他ゲーム導線は `https://chameleonjp-lab.github.io/chameleonjp_lab/` へ遷移します。ランキング送信は結果画面へ入った後に `submit_score` で自動で1回だけ実行し、送信値はミリ秒整数、表示は秒・小数3桁です。リタイア時は実行しません。Supabase は Publishable key を使用し、secret key / service_role key は使いません。
