@@ -10,6 +10,7 @@ try{
   if(fn==='record_game_play'){telemetry.push(p);await route.fulfill({json:{accepted:true}});return;}
   if(fn==='get_game_play_stats'){await route.fulfill({json:[{player_count:35,total_play_count:50}]});return;}
   if(rankMode==='fail'){await route.fulfill({status:503,json:{code:'offline'}});return;}
+  if(rankMode==='malformed'){await route.fulfill({json:[{display_name:'missing score/rank'}]});return;}
   if(rankMode==='empty'){await route.fulfill({json:[]});return;}
   let prefix='Player';if(rankMode==='race'){raceCount++;prefix=raceCount===1?'Stale':'Fresh';await new Promise(r=>setTimeout(r,raceCount===1?200:10));}
   await route.fulfill({json:Array.from({length:35},(_,i)=>({rank_no:i<2?1:i+1,display_name:rankMode==='normal'?(i<2?'同名 <img>':`Player ${i}`):prefix,best_score:12345+i}))});
@@ -48,6 +49,7 @@ try{
  }
  rankMode='race';await page.evaluate(()=>{void fetchRanking();void fetchRanking();});await page.waitForTimeout(350);assert.equal(await page.locator('#rankingList li').first().locator('span').nth(1).textContent(),'Fresh');
  rankMode='fail';await page.click('#retryRankingBtn');await page.waitForFunction(()=>!document.getElementById('retryRankingBtn').disabled);assert.equal(await page.locator('#rankingReadStatus').textContent(),catalogs.th.rankingLoadFailed);
+ rankMode='malformed';await page.click('#retryRankingBtn');await page.waitForFunction(()=>!document.getElementById('retryRankingBtn').disabled);assert.equal(await page.locator('#rankingReadStatus').textContent(),catalogs.th.rankingLoadFailed);
  rankMode='empty';await page.click('#retryRankingBtn');await page.waitForFunction(()=>!document.getElementById('retryRankingBtn').disabled);assert.equal(await page.locator('#rankingList').textContent(),catalogs.th.noRecords);
  await page.click('#resultHomeBtn');await page.fill('#playerName','');await page.locator('#playerName').dispatchEvent('change');await page.reload();assert.equal(await page.locator('#playerName').inputValue(),'');assert.equal(await page.evaluate(()=>soundEnabled),false);assert.equal(await page.evaluate(()=>soundVolume),0);assert.deepEqual(errors,[]);
  console.log(JSON.stringify({languages:Object.keys(catalogs).length,solved20BottlesIn60Moves:true,guestClearAndRetire:true,snapshotStable:true,lostAckSameId:true,distinctScoreIds:ledger.size,telemetryPreservedWithoutReloadRetry:true,top30:true,rankingRaceFailureEmpty:true,soundOffZeroPreserved:true,productionWrites:0}));
