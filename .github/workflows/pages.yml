@@ -26,6 +26,7 @@ jobs:
           python-version: '3.12'
       - run: python3 tools/check-site.py
       - run: node tools/share.test.mjs
+      - run: node tools/audio.test.mjs
       - name: Stage the validated public file
         run: python3 tools/check-site.py --out _site
       - name: Upload this commit's Pages artifact

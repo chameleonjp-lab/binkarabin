@@ -12,7 +12,7 @@
 </head>
 <body>
 <div class="app">
-  <section id="homeScreen" class="screen active"><h1 class="title">🫙ビンカラビン</h1><p class="subtitle">ビンの中の色を移し替えて、すべてのビンの色をそろえるパズルゲーム。</p><div class="card"><div class="actions"><button id="startBtn">ゲーム開始</button><button class="secondary" id="ruleBtn">ルール説明</button><button class="ghost common-x-share" id="shareHomeBtn">Xでシェア</button><a class="common-ranking-link" href="https://chameleonjp-lab.github.io/chameleonjp_lab/ranking.html?game=binkarabin">ランキング</a><button class="ghost" id="otherGamesBtn">他のゲームで遊ぶ</button></div><p class="small" id="playStats">ランキング対応：クリアタイムが短いほど上位です。</p></div></section>
+  <section id="homeScreen" class="screen active"><h1 class="title">🫙ビンカラビン</h1><p class="subtitle">ビンの中の色を移し替えて、すべてのビンの色をそろえるパズルゲーム。</p><div class="card"><div class="actions"><button id="startBtn">ゲーム開始</button><button class="secondary" id="ruleBtn">ルール説明</button><button class="ghost common-x-share" id="shareHomeBtn">Xでシェア</button><a class="common-ranking-link" href="https://chameleonjp-lab.github.io/chameleonjp_lab/ranking.html?game=binkarabin">ランキング</a><button class="ghost" id="otherGamesBtn">他のゲームで遊ぶ</button></div><div class="row"><button id="soundToggle" type="button">音ON</button><label for="soundVolume">音量 <output id="soundVolumeLabel">50%</output><input id="soundVolume" type="range" min="0" max="1" step="0.05" value="0.5"></label></div><p class="small" id="playStats">ランキング対応：クリアタイムが短いほど上位です。</p></div></section>
   <section id="ruleScreen" class="screen"><div class="card"><h2>ルール説明</h2><p>2回タップで、ビンの上にある同じ色の層を別のビンへ移します。</p><ul><li>移し先は空、または一番上が同じ色のときだけ移せます。</li><li>1本のビンは最大4層です。</li><li>すべてのビンを空か同じ色だけにするとクリアです。</li><li>リタイア時はランキング送信しません。</li></ul><div class="actions"><button id="ruleStartBtn">名前入力へ</button><button class="ghost" id="ruleBackBtn">ホームへ戻る</button></div></div></section>
   <section id="nameScreen" class="screen"><div class="card"><h2>名前入力</h2><p>ランキングに表示する名前を入力してください。</p><input id="playerName" class="name-input" maxlength="10" autocomplete="nickname" placeholder="10文字まで" aria-label="プレイヤー名"><div id="nameError" class="notice hidden">名前を入力してください。</div><div class="actions"><button id="nameStartBtn">この名前で開始</button><button class="ghost" id="nameBackBtn">戻る</button></div></div></section>
   <section id="gameScreen" class="screen"><div class="topbar"><div><div class="game-title">🫙ビンカラビン</div><div class="stats"><span class="pill">⏱ <span id="timeLabel">0.000秒</span></span><span class="pill">👆 <span id="moveLabel">0手</span></span></div></div><div class="row"><button class="ghost" id="gameHomeBtn">ホームへ</button><button class="danger" id="retireBtn">リタイア</button></div></div><div id="canvasWrap" class="canvas-wrap"><canvas id="gameCanvas" width="390" height="620"></canvas><div id="countdownOverlay" class="countdown-overlay hidden" aria-hidden="true"></div></div><div class="bottom-panel"><div id="gameStatus" class="status" role="status" aria-live="polite">移し元のビンをタップ</div><button class="secondary" id="undoBtn">1手戻す</button></div></section>
@@ -153,7 +153,69 @@ function draw(){const w=el.canvas.width/devicePixelRatio,h=el.canvas.height/devi
 function drawBottle(r,i){ctx.save();const sel=state.selectedBottleIndex===i;const shake=state.effects.some(e=>e.type==='bad'&&e.i===i)?Math.sin(Date.now()/24)*4:0;const lift=sel?-7:0;ctx.translate(shake,lift);if(sel){ctx.shadowColor='rgba(255,184,77,.55)';ctx.shadowBlur=18;ctx.shadowOffsetY=4;}ctx.lineWidth=4;ctx.strokeStyle=sel?'#ffb84d':'#37506e';ctx.fillStyle='rgba(255,255,255,.55)';roundRect(r.x,r.y,r.w,r.h,18);ctx.fill();ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.stroke();const pad=8,slot=(r.h-22)/BOTTLE_CAPACITY,b=state.bottles[i]||[];ctx.save();roundRect(r.x,r.y,r.w,r.h,18);ctx.clip();for(let k=0;k<b.length;k++){const col=COLORS[b[k]],lx=r.x+pad,lw=r.w-pad*2,ly=r.y+r.h-12-slot*(k+1),lh=slot-3;const grd=ctx.createLinearGradient(0,ly,0,ly+lh);grd.addColorStop(0,shade(col,28,true));grd.addColorStop(.5,col);grd.addColorStop(1,shade(col,18,false));ctx.fillStyle=grd;roundRect(lx,ly,lw,lh,8);ctx.fill();ctx.fillStyle='rgba(255,255,255,.16)';roundRect(lx,ly,lw,Math.max(4,lh*0.4),8);ctx.fill();ctx.fillStyle=SYMCOLOR[b[k]];ctx.font='800 '+Math.round(lh*0.6)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(SYMBOLS[b[k]],lx+lw/2,ly+lh/2+1);}ctx.textBaseline='alphabetic';ctx.fillStyle='rgba(255,255,255,.28)';roundRect(r.x+r.w*0.16,r.y+8,r.w*0.1,r.h-20,6);ctx.fill();ctx.restore();if(sel){ctx.lineWidth=9;ctx.strokeStyle='rgba(255,184,77,.28)';roundRect(r.x,r.y,r.w,r.h,18);ctx.stroke();}ctx.fillStyle='#15233c';ctx.font='800 14px system-ui';ctx.textAlign='center';ctx.fillText(i+1,r.x+r.w/2,r.y+r.h+20);ctx.restore()}
 function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
 function invalid(msg){setStatus(msg);playSound('bad');if(state.selectedBottleIndex!==null)state.effects.push({type:'bad',i:state.selectedBottleIndex,t:12});el.canvasWrap.classList.remove('shake');void el.canvasWrap.offsetWidth;el.canvasWrap.classList.add('shake');draw()}
-function resumeAudio(){if(!state.audio)state.audio=new (window.AudioContext||window.webkitAudioContext)();if(state.audio.state==='suspended')state.audio.resume()}function playSound(type){try{if(!state.audio)return;const o=state.audio.createOscillator(),g=state.audio.createGain();o.connect(g);g.connect(state.audio.destination);o.frequency.value={select:520,pour:720,bad:160,clear:880,retire:220}[type]||440;g.gain.setValueAtTime(.05,state.audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,state.audio.currentTime+.12);o.start();o.stop(state.audio.currentTime+.13)}catch(e){}}
+// Saved sound settings are separate from names and scores.
+let soundEnabled=true,soundVolume=.5,lastSoundAt=-Infinity;
+try {
+ const enabled=localStorage.getItem('binkarabin:sound');
+ if(enabled==='off'||enabled==='on')soundEnabled=enabled==='on';
+ const volume=localStorage.getItem('binkarabin:volume');
+ if(volume!==null&&volume.trim()!==''&&Number.isFinite(Number(volume))&&Number(volume)>=0&&Number(volume)<=1)soundVolume=Number(volume);
+}catch(_){}
+const soundNodes=new Set();
+function stopSounds(){soundNodes.forEach(source=>{try{source.stop()}catch(_){}})}
+function updateSoundControls(){
+ $('soundToggle').textContent=soundEnabled?'音ON':'音OFF';
+ $('soundToggle').setAttribute('aria-pressed',String(soundEnabled));
+ $('soundVolume').value=String(soundVolume);
+ $('soundVolumeLabel').textContent=Math.round(soundVolume*100)+'%';
+}
+function resumeAudio(){
+ if(!soundEnabled||soundVolume===0||document.hidden)return;
+ try {
+  const Audio=window.AudioContext||window.webkitAudioContext;
+  if(!Audio)return;
+  if(!state.audio)state.audio=new Audio();
+  if(state.audio.state==='suspended')state.audio.resume().catch(()=>{});
+ }catch(_){}
+}
+function setSoundEnabled(enabled){
+ soundEnabled=enabled;
+ try{localStorage.setItem('binkarabin:sound',enabled?'on':'off')}catch(_){}
+ if(!enabled)stopSounds();else resumeAudio();
+ updateSoundControls();
+}
+function setSoundVolume(value){
+ const next=Number(value);
+ if(!Number.isFinite(next)||next<0||next>1)return;
+ soundVolume=next;
+ try{localStorage.setItem('binkarabin:volume',String(next))}catch(_){}
+ stopSounds();resumeAudio();updateSoundControls();
+}
+function playSound(type){
+ try {
+  if(!state.audio||state.audio.state!=='running'||!soundEnabled||soundVolume===0||document.hidden)return;
+  const now=performance.now(),final=type==='clear'||type==='retire';
+  if(!final&&now-lastSoundAt<60)return;
+  lastSoundAt=now;
+  if(final)stopSounds();
+  const o=state.audio.createOscillator(),g=state.audio.createGain();
+  o.connect(g);g.connect(state.audio.destination);
+  o.frequency.value={select:520,pour:720,bad:160,clear:880,retire:220}[type]||440;
+  g.gain.setValueAtTime(.05*soundVolume,state.audio.currentTime);
+  g.gain.exponentialRampToValueAtTime(.001,state.audio.currentTime+.12);
+  o.onended=()=>{o.disconnect();g.disconnect();soundNodes.delete(o)};
+  soundNodes.add(o);o.start();o.stop(state.audio.currentTime+.13);
+ }catch(_){}
+}
+$('soundToggle').addEventListener('click',()=>setSoundEnabled(!soundEnabled));
+$('soundVolume').addEventListener('input',event=>setSoundVolume(event.target.value));
+document.addEventListener('visibilitychange',()=>{
+ if(document.hidden){stopSounds();try{state.audio?.suspend().catch(()=>{})}catch(_){}}
+ else resumeAudio();
+});
+updateSoundControls();
+// End saved sound settings.
+
 function shareText(text){window.openGameShareX(text);}
 function showToast(msg){const t=el.toast;if(!t)return;t.textContent=msg;t.classList.remove('hidden');requestAnimationFrame(()=>t.classList.add('show'));clearTimeout(state.toastT);state.toastT=setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.classList.add('hidden'),300)},1600)}
 function launchConfetti(){const cv=document.createElement('canvas');cv.style.cssText='position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999';const dpr=Math.min(2,window.devicePixelRatio||1);cv.width=Math.round(innerWidth*dpr);cv.height=Math.round(innerHeight*dpr);document.body.appendChild(cv);const cc=cv.getContext('2d');cc.scale(dpr,dpr);const cols=['#ff667a','#4aa3ff','#ffd451','#55d68b','#ffb84d'];const P=[];for(let i=0;i<70;i++)P.push({x:innerWidth/2+(Math.random()*2-1)*70,y:innerHeight*0.32,vx:(Math.random()*2-1)*260,vy:-220-Math.random()*280,g:560+Math.random()*240,r:4+Math.random()*5,c:cols[i%cols.length],rot:Math.random()*6.28,vr:(Math.random()*2-1)*9,life:0});const t0=performance.now();let last=t0;function frame(now){const dt=Math.min(0.04,(now-last)/1000);last=now;cc.clearRect(0,0,innerWidth,innerHeight);let alive=false;for(const p of P){p.life+=dt;p.vy+=p.g*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.rot+=p.vr*dt;const a=Math.max(0,1-p.life/1.6);if(a>0&&p.y<innerHeight+40){alive=true;cc.save();cc.globalAlpha=a;cc.translate(p.x,p.y);cc.rotate(p.rot);cc.fillStyle=p.c;cc.fillRect(-p.r,-p.r*0.6,p.r*2,p.r*1.2);cc.restore();}}if(alive&&now-t0<2200)requestAnimationFrame(frame);else cv.remove();}requestAnimationFrame(frame);}
