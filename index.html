@@ -12,14 +12,71 @@
 </head>
 <body>
 <div class="app">
-  <section id="homeScreen" class="screen active"><h1 class="title">🫙ビンカラビン</h1><p class="subtitle">ビンの中の色を移し替えて、すべてのビンの色をそろえるパズルゲーム。</p><div class="card"><div class="actions"><button id="startBtn">ゲーム開始</button><button class="secondary" id="ruleBtn">ルール説明</button><button class="ghost" id="shareHomeBtn">ゲームをシェア</button><button class="ghost" id="otherGamesBtn">他のゲームで遊ぶ</button></div><p class="small" id="playStats">ランキング対応：クリアタイムが短いほど上位です。</p></div></section>
+  <section id="homeScreen" class="screen active"><h1 class="title">🫙ビンカラビン</h1><p class="subtitle">ビンの中の色を移し替えて、すべてのビンの色をそろえるパズルゲーム。</p><div class="card"><div class="actions"><button id="startBtn">ゲーム開始</button><button class="secondary" id="ruleBtn">ルール説明</button><button class="ghost common-x-share" id="shareHomeBtn">Xでシェア</button><a class="common-ranking-link" href="https://chameleonjp-lab.github.io/chameleonjp_lab/ranking.html?game=binkarabin">ランキング</a><button class="ghost" id="otherGamesBtn">他のゲームで遊ぶ</button></div><p class="small" id="playStats">ランキング対応：クリアタイムが短いほど上位です。</p></div></section>
   <section id="ruleScreen" class="screen"><div class="card"><h2>ルール説明</h2><p>2回タップで、ビンの上にある同じ色の層を別のビンへ移します。</p><ul><li>移し先は空、または一番上が同じ色のときだけ移せます。</li><li>1本のビンは最大4層です。</li><li>すべてのビンを空か同じ色だけにするとクリアです。</li><li>リタイア時はランキング送信しません。</li></ul><div class="actions"><button id="ruleStartBtn">名前入力へ</button><button class="ghost" id="ruleBackBtn">ホームへ戻る</button></div></div></section>
   <section id="nameScreen" class="screen"><div class="card"><h2>名前入力</h2><p>ランキングに表示する名前を入力してください。</p><input id="playerName" class="name-input" maxlength="10" autocomplete="nickname" placeholder="10文字まで" aria-label="プレイヤー名"><div id="nameError" class="notice hidden">名前を入力してください。</div><div class="actions"><button id="nameStartBtn">この名前で開始</button><button class="ghost" id="nameBackBtn">戻る</button></div></div></section>
   <section id="gameScreen" class="screen"><div class="topbar"><div><div class="game-title">🫙ビンカラビン</div><div class="stats"><span class="pill">⏱ <span id="timeLabel">0.000秒</span></span><span class="pill">👆 <span id="moveLabel">0手</span></span></div></div><div class="row"><button class="ghost" id="gameHomeBtn">ホームへ</button><button class="danger" id="retireBtn">リタイア</button></div></div><div id="canvasWrap" class="canvas-wrap"><canvas id="gameCanvas" width="390" height="620"></canvas><div id="countdownOverlay" class="countdown-overlay hidden" aria-hidden="true"></div></div><div class="bottom-panel"><div id="gameStatus" class="status" role="status" aria-live="polite">移し元のビンをタップ</div><button class="secondary" id="undoBtn">1手戻す</button></div></section>
-  <section id="resultScreen" class="screen"><div class="card"><h2 id="resultTitle">クリア！</h2><p><strong id="resultTime">0.000秒</strong> / <span id="resultMoves">0手</span></p><div id="submitStatus" class="notice">ランキング送信中...</div><h3>ランキング</h3><ol id="rankingList" class="ranking"><li><span>-</span><span>読み込み中</span><span>-</span></li></ol><div class="actions"><button id="againBtn">もう一度</button><button class="ghost" id="resultHomeBtn">ホームへ戻る</button><button class="secondary" id="shareResultBtn">結果をシェア</button><button class="ghost" id="resultOtherBtn">他のゲームで遊ぶ</button></div></div></section>
+  <section id="resultScreen" class="screen"><div class="card"><h2 id="resultTitle">クリア！</h2><p><strong id="resultTime">0.000秒</strong> / <span id="resultMoves">0手</span></p><div id="submitStatus" class="notice">ランキング送信中...</div><h3>ランキング</h3><ol id="rankingList" class="ranking"><li><span>-</span><span>読み込み中</span><span>-</span></li></ol><div class="actions"><button id="againBtn">もう一度</button><button class="ghost" id="resultHomeBtn">ホームへ戻る</button><button class="secondary common-x-share" id="shareResultBtn">Xでシェア</button><a class="common-ranking-link" href="https://chameleonjp-lab.github.io/chameleonjp_lab/ranking.html?game=binkarabin">ランキング</a><button class="ghost" id="resultOtherBtn">他のゲームで遊ぶ</button></div></div></section>
   <section id="errorScreen" class="screen"><div class="card"><h2>通信失敗</h2><p id="errorMessage">ランキング送信に失敗しました。</p><button id="errorBackBtn">結果へ戻る</button></div></section>
   <div id="toast" class="toast hidden" role="status" aria-live="polite"></div>
 </div>
+<style>
+button.common-x-share { background:#000 !important; color:#fff !important; border:1px solid #555; white-space:normal; overflow-wrap:anywhere; min-height:44px; padding:12px 16px; line-height:1.4; }
+.common-ranking-link { display:inline-flex; align-items:center; justify-content:center; box-sizing:border-box; min-height:44px; padding:12px 16px; border:1px solid currentColor; border-radius:10px; color:inherit; text-decoration:none; white-space:normal; overflow-wrap:anywhere; line-height:1.4; }
+#commonShareFallback { box-sizing:border-box; width:min(92vw,32rem); max-height:85dvh; overflow:auto; border:1px solid #777; border-radius:12px; padding:20px; background:#fff; color:#111; }
+#commonShareFallback::backdrop { background:#0009; }
+#commonShareFallback textarea { box-sizing:border-box; width:100%; min-height:160px; padding:10px; font:16px/1.5 sans-serif; color:#111; background:#fff; user-select:text; -webkit-user-select:text; }
+#commonShareFallback button { min-height:44px; margin:6px; padding:10px 16px; white-space:normal; color:#fff; background:#222; }
+</style>
+<dialog id="commonShareFallback" aria-labelledby="commonShareHeading">
+  <h2 id="commonShareHeading">共有文をコピー</h2>
+  <p>Xを開けない場合は、本文とURLをコピーして投稿できます。</p>
+  <textarea id="commonShareText" readonly aria-label="共有する本文とURL"></textarea>
+  <p id="commonShareStatus" role="status" aria-live="polite"></p>
+  <button id="commonShareCopy" type="button">コピー</button>
+  <button id="commonShareClose" type="button">閉じる</button>
+</dialog>
+<script>
+(() => {
+  'use strict';
+  const dialog = document.getElementById('commonShareFallback');
+  const field = document.getElementById('commonShareText');
+  const status = document.getElementById('commonShareStatus');
+  window.openGameShareX = (text) => {
+    const body = String(text);
+    const intent = new URL('https://x.com/intent/post');
+    intent.searchParams.set('text', body);
+    let popup;
+    try {
+      popup = window.open('', '_blank');
+      if (popup) {
+        popup.opener = null;
+        popup.location.replace(intent.href);
+        return;
+      }
+    } catch (_) {
+      try { if (popup) popup.close(); } catch (_) {}
+    }
+    field.value = body;
+    status.textContent = '';
+    if (!dialog.open) dialog.showModal();
+    field.focus();
+    field.select();
+  };
+  document.getElementById('commonShareCopy').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(field.value);
+      status.textContent = 'コピーしました。投稿はXで確認してください。';
+    } catch (_) {
+      field.focus();
+      field.select();
+      status.textContent = '本文を選択して手動でコピーしてください。';
+    }
+  });
+  document.getElementById('commonShareClose').addEventListener('click', () => dialog.close());
+})();
+</script>
+
 <script>
 'use strict';
 const GAME_SLUG='binkarabin',GAME_TITLE='ビンカラビン',GAME_URL='https://chameleonjp.codeberg.page/binkarabin/',OTHER_GAMES_URL='https://chameleonjp-lab.github.io/chameleonjp_lab/';
@@ -88,16 +145,16 @@ async function goHomeFromGame(){if(state.mode==='READY'||state.mode==='PLAYING')
 function bindCanvasInput(){el.canvas.addEventListener('pointerdown',e=>{if(state.mode!=='PLAYING'||state.finished)return;canvasPointer={id:e.pointerId,x:e.clientX,y:e.clientY,moved:false}},{passive:true});el.canvas.addEventListener('pointermove',e=>{if(!canvasPointer||canvasPointer.id!==e.pointerId)return;const dx=Math.abs(e.clientX-canvasPointer.x),dy=Math.abs(e.clientY-canvasPointer.y);if(dx>10||dy>10)canvasPointer.moved=true},{passive:true});el.canvas.addEventListener('pointerup',e=>{if(!canvasPointer||canvasPointer.id!==e.pointerId)return;const p=canvasPointer;canvasPointer=null;if(p.moved)return;if(state.mode!=='PLAYING'||state.finished)return;resumeAudio();const rect=el.canvas.getBoundingClientRect();const cssW=el.canvas.width/devicePixelRatio;const cssH=el.canvas.height/devicePixelRatio;handleCanvasTap((e.clientX-rect.left)*cssW/rect.width,(e.clientY-rect.top)*cssH/rect.height)},{passive:true});el.canvas.addEventListener('pointercancel',()=>{canvasPointer=null},{passive:true})}function bindGameDoubleTapGuard(){el.canvasWrap.addEventListener('touchstart',e=>{const t=e.touches&&e.touches[0];if(!t)return;gameTouchStart={x:t.clientX,y:t.clientY};gameTouchMoved=false},{passive:true});el.canvasWrap.addEventListener('touchmove',e=>{if(!gameTouchStart)return;const t=e.touches&&e.touches[0];if(!t)return;const dx=Math.abs(t.clientX-gameTouchStart.x),dy=Math.abs(t.clientY-gameTouchStart.y);if(dx>10||dy>10)gameTouchMoved=true},{passive:true});el.canvasWrap.addEventListener('touchend',e=>{if(state.mode!=='READY'&&state.mode!=='PLAYING')return;const target=e.target;if(target&&target.closest&&target.closest('button,input,a'))return;if(gameTouchMoved)return;const now=Date.now();if(now-lastGameTapTime<350)e.preventDefault();lastGameTapTime=now},{passive:false});el.canvasWrap.addEventListener('touchcancel',()=>{gameTouchStart=null;gameTouchMoved=false},{passive:true})}
 async function recordPlayOnlyOnce(resultType){if(state.playRecorded)return true;state.playRecorded=true;try{const result=await sbRpc('record_game_play',{p_display_name:state.playerName,p_game_slug:GAME_SLUG,p_result_type:resultType,p_client_version:CLIENT_VERSION});if(result&&result.accepted===false){console.warn('record_game_play rejected',result);return false}return true}catch(e){console.warn('record_game_play failed',e);return false}}
 async function submitScoreOnce(){if(state.submitted)return;state.submitted=true;el.submitStatus.innerHTML='<span class="spin"></span>ランキング送信中...';let ok=false;for(let attempt=0;attempt<2&&!ok;attempt++){try{await sbRpc('submit_score',{p_display_name:state.playerName,p_game_slug:GAME_SLUG,p_score:Math.round(state.elapsedMs),p_client_version:CLIENT_VERSION});ok=true}catch(e){if(attempt===0)await wait(900)}}if(ok){el.submitStatus.textContent='ランキング送信完了';}else{el.submitStatus.textContent='ランキング送信に失敗しました';}await fetchRanking()}
-async function fetchRanking(){try{const data=await sbRpc('get_best_score_ranking',{p_game_slug:GAME_SLUG,p_limit:10});renderRanking(data||[])}catch(e){renderRanking([])}}function normalizeStatsResponse(data){const row=Array.isArray(data)?data[0]:data;return{players:Number(row?.players??row?.player_count??0),plays:Number(row?.plays??row?.total_play_count??0)}}async function fetchPlayStats(){if(!el.playStats)return;try{const data=await sbRpc('get_game_play_stats',{p_game_slug:GAME_SLUG});const stats=normalizeStatsResponse(data);el.playStats.textContent=`参加 ${stats.players}人 / プレイ ${stats.plays}回（リタイア含む）`;}catch(e){console.warn('fetchPlayStats failed',e);el.playStats.textContent='参加 -人 / プレイ -回（リタイア含む）';}}
+async function fetchRanking(){try{const data=await sbRpc('get_best_score_ranking',{p_game_slug:GAME_SLUG,p_limit:30});renderRanking(data||[])}catch(e){renderRanking([])}}function normalizeStatsResponse(data){const row=Array.isArray(data)?data[0]:data;return{players:Number(row?.players??row?.player_count??0),plays:Number(row?.plays??row?.total_play_count??0)}}async function fetchPlayStats(){if(!el.playStats)return;try{const data=await sbRpc('get_game_play_stats',{p_game_slug:GAME_SLUG});const stats=normalizeStatsResponse(data);el.playStats.textContent=`参加 ${stats.players}人 / プレイ ${stats.plays}回（リタイア含む）`;}catch(e){console.warn('fetchPlayStats failed',e);el.playStats.textContent='参加 -人 / プレイ -回（リタイア含む）';}}
 function wait(ms){return new Promise(r=>setTimeout(r,ms))}
 async function sbRpc(fn,args,timeoutMs=8000){const ctrl=new AbortController();const tid=setTimeout(()=>ctrl.abort(),timeoutMs);try{const res=await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`,{method:'POST',headers:{apikey:SUPABASE_PUBLISHABLE_KEY,Authorization:`Bearer ${SUPABASE_PUBLISHABLE_KEY}`,'Content-Type':'application/json'},body:JSON.stringify(args),signal:ctrl.signal});const text=await res.text();let json=null;try{json=text?JSON.parse(text):null}catch(_){json=text}if(!res.ok){console.warn('Supabase RPC failed',{fn,status:res.status,response:json});throw new Error(`${fn} ${res.status}`)}return json}finally{clearTimeout(tid)}}
-function renderRanking(rows){el.rankingList.innerHTML='';if(!rows.length){el.rankingList.innerHTML='<li><span>-</span><span>ランキングを取得できません</span><span>-</span></li>';return}rows.slice(0,10).forEach((r,i)=>{const li=document.createElement('li');const name=r.display_name??r.player_name??r.name??'名無し';const rank=r.rank_no??(i+1);const rawScore=Number(r.score??r.best_score??r.first_score??0);li.innerHTML=`<span>${rank}</span><span>${escapeHtml(name)}</span><span>${fmt(rawScore)}</span>`;el.rankingList.appendChild(li)})}
+function renderRanking(rows){el.rankingList.innerHTML='';if(!rows.length){el.rankingList.innerHTML='<li><span>-</span><span>ランキングを取得できません</span><span>-</span></li>';return}rows.slice(0,30).forEach((r,i)=>{const li=document.createElement('li');const name=r.display_name??r.player_name??r.name??'名無し';const rank=r.rank_no??(i+1);const rawScore=Number(r.score??r.best_score??r.first_score??0);li.innerHTML=`<span>${rank}</span><span>${escapeHtml(name)}</span><span>${fmt(rawScore)}</span>`;el.rankingList.appendChild(li)})}
 function draw(){const w=el.canvas.width/devicePixelRatio,h=el.canvas.height/devicePixelRatio;ctx.clearRect(0,0,w,h);ctx.fillStyle='#ffe6b8';ctx.fillRect(0,h-42,w,42);state.rects.forEach((r,i)=>drawBottle(r,i));state.effects=state.effects.filter(e=>--e.t>0);if(state.effects.length)requestAnimationFrame(draw)}
 function drawBottle(r,i){ctx.save();const sel=state.selectedBottleIndex===i;const shake=state.effects.some(e=>e.type==='bad'&&e.i===i)?Math.sin(Date.now()/24)*4:0;const lift=sel?-7:0;ctx.translate(shake,lift);if(sel){ctx.shadowColor='rgba(255,184,77,.55)';ctx.shadowBlur=18;ctx.shadowOffsetY=4;}ctx.lineWidth=4;ctx.strokeStyle=sel?'#ffb84d':'#37506e';ctx.fillStyle='rgba(255,255,255,.55)';roundRect(r.x,r.y,r.w,r.h,18);ctx.fill();ctx.shadowColor='transparent';ctx.shadowBlur=0;ctx.shadowOffsetY=0;ctx.stroke();const pad=8,slot=(r.h-22)/BOTTLE_CAPACITY,b=state.bottles[i]||[];ctx.save();roundRect(r.x,r.y,r.w,r.h,18);ctx.clip();for(let k=0;k<b.length;k++){const col=COLORS[b[k]],lx=r.x+pad,lw=r.w-pad*2,ly=r.y+r.h-12-slot*(k+1),lh=slot-3;const grd=ctx.createLinearGradient(0,ly,0,ly+lh);grd.addColorStop(0,shade(col,28,true));grd.addColorStop(.5,col);grd.addColorStop(1,shade(col,18,false));ctx.fillStyle=grd;roundRect(lx,ly,lw,lh,8);ctx.fill();ctx.fillStyle='rgba(255,255,255,.16)';roundRect(lx,ly,lw,Math.max(4,lh*0.4),8);ctx.fill();ctx.fillStyle=SYMCOLOR[b[k]];ctx.font='800 '+Math.round(lh*0.6)+'px system-ui';ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(SYMBOLS[b[k]],lx+lw/2,ly+lh/2+1);}ctx.textBaseline='alphabetic';ctx.fillStyle='rgba(255,255,255,.28)';roundRect(r.x+r.w*0.16,r.y+8,r.w*0.1,r.h-20,6);ctx.fill();ctx.restore();if(sel){ctx.lineWidth=9;ctx.strokeStyle='rgba(255,184,77,.28)';roundRect(r.x,r.y,r.w,r.h,18);ctx.stroke();}ctx.fillStyle='#15233c';ctx.font='800 14px system-ui';ctx.textAlign='center';ctx.fillText(i+1,r.x+r.w/2,r.y+r.h+20);ctx.restore()}
 function roundRect(x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath()}
 function invalid(msg){setStatus(msg);playSound('bad');if(state.selectedBottleIndex!==null)state.effects.push({type:'bad',i:state.selectedBottleIndex,t:12});el.canvasWrap.classList.remove('shake');void el.canvasWrap.offsetWidth;el.canvasWrap.classList.add('shake');draw()}
 function resumeAudio(){if(!state.audio)state.audio=new (window.AudioContext||window.webkitAudioContext)();if(state.audio.state==='suspended')state.audio.resume()}function playSound(type){try{if(!state.audio)return;const o=state.audio.createOscillator(),g=state.audio.createGain();o.connect(g);g.connect(state.audio.destination);o.frequency.value={select:520,pour:720,bad:160,clear:880,retire:220}[type]||440;g.gain.setValueAtTime(.05,state.audio.currentTime);g.gain.exponentialRampToValueAtTime(.001,state.audio.currentTime+.12);o.start();o.stop(state.audio.currentTime+.13)}catch(e){}}
-async function shareText(text){try{if(navigator.share){await navigator.share({text});showToast('共有しました');}else if(navigator.clipboard){await navigator.clipboard.writeText(text);showToast('リンクをコピーしました');}}catch(e){}}
+function shareText(text){window.openGameShareX(text);}
 function showToast(msg){const t=el.toast;if(!t)return;t.textContent=msg;t.classList.remove('hidden');requestAnimationFrame(()=>t.classList.add('show'));clearTimeout(state.toastT);state.toastT=setTimeout(()=>{t.classList.remove('show');setTimeout(()=>t.classList.add('hidden'),300)},1600)}
 function launchConfetti(){const cv=document.createElement('canvas');cv.style.cssText='position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:9999';const dpr=Math.min(2,window.devicePixelRatio||1);cv.width=Math.round(innerWidth*dpr);cv.height=Math.round(innerHeight*dpr);document.body.appendChild(cv);const cc=cv.getContext('2d');cc.scale(dpr,dpr);const cols=['#ff667a','#4aa3ff','#ffd451','#55d68b','#ffb84d'];const P=[];for(let i=0;i<70;i++)P.push({x:innerWidth/2+(Math.random()*2-1)*70,y:innerHeight*0.32,vx:(Math.random()*2-1)*260,vy:-220-Math.random()*280,g:560+Math.random()*240,r:4+Math.random()*5,c:cols[i%cols.length],rot:Math.random()*6.28,vr:(Math.random()*2-1)*9,life:0});const t0=performance.now();let last=t0;function frame(now){const dt=Math.min(0.04,(now-last)/1000);last=now;cc.clearRect(0,0,innerWidth,innerHeight);let alive=false;for(const p of P){p.life+=dt;p.vy+=p.g*dt;p.x+=p.vx*dt;p.y+=p.vy*dt;p.rot+=p.vr*dt;const a=Math.max(0,1-p.life/1.6);if(a>0&&p.y<innerHeight+40){alive=true;cc.save();cc.globalAlpha=a;cc.translate(p.x,p.y);cc.rotate(p.rot);cc.fillStyle=p.c;cc.fillRect(-p.r,-p.r*0.6,p.r*2,p.r*1.2);cc.restore();}}if(alive&&now-t0<2200)requestAnimationFrame(frame);else cv.remove();}requestAnimationFrame(frame);}
 function shareHome(){shareText(`${GAME_TITLE}\nビンの中の色をそろえるパズルゲームです。\n${GAME_URL}`)}function shareResult(){const text=state.retired?`${GAME_TITLE}\nリタイア：${fmt(state.elapsedMs)} / ${state.moveCount}手\n${GAME_URL}`:`${GAME_TITLE}\nクリアタイム：${fmt(state.elapsedMs)}\n手数：${state.moveCount}手\n${GAME_URL}`;shareText(text)}function openOther(){location.href=OTHER_GAMES_URL}function escapeHtml(s){return String(s).replace(/[&<>'"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]))}

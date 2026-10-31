@@ -3,3 +3,4 @@ test-artifacts/baseline/
 test-artifacts/after/
 test-artifacts/*/*.png
 test-artifacts/*/console.log
+/_site/
