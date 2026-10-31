@@ -8,9 +8,10 @@ function setup(saved={},supported=true){
  let created=0,now=0;const listeners={},els=new Map();
  const node=()=>({frequency:{value:0},gain:{setValueAtTime(){},exponentialRampToValueAtTime(){}},connect(){},disconnect(){},start(){},stop(at){if(at===undefined)this.onended?.();}});
  class Audio {constructor(){created++;this.state='running';this.currentTime=0;this.destination={};}createGain(){return node();}createOscillator(){return node();}suspend(){this.state='suspended';return Promise.resolve();}resume(){this.state='running';return Promise.resolve();}}
- const document={hidden:false,addEventListener(k,f){listeners[k]=f;}};
- const ctx=vm.createContext({state:{audio:null},document,window:supported?{AudioContext:Audio}:{},localStorage:{getItem:k=>saved[k]??null,setItem:(k,v)=>saved[k]=v},$:id=>{if(!els.has(id))els.set(id,{addEventListener(){},setAttribute(){}});return els.get(id);},performance:{now:()=>now},Number,Math,Set});
- vm.runInContext(code+';globalThis.api={setSoundEnabled,setSoundVolume,resumeAudio,playSound,get:()=>({enabled:soundEnabled,volume:soundVolume,nodes:soundNodes.size})};',ctx);
+ const document={hidden:false,documentElement:{},querySelectorAll:()=>[],getElementById:id=>id==='locale-catalogs'?{textContent:html.match(/<script id="locale-catalogs" type="application\/json">([\s\S]*?)<\/script>/)[1]}:null,addEventListener(k,f){listeners[k]=f;}};
+ const ctx=vm.createContext({state:{audio:null},navigator:{languages:['ja']},document,window:supported?{AudioContext:Audio}:{},localStorage:{getItem:k=>saved[k]??null,setItem:(k,v)=>saved[k]=v},$:id=>{if(!els.has(id))els.set(id,{dataset:{},addEventListener(){},setAttribute(){}});return els.get(id);},performance:{now:()=>now},Number,Math,Set});
+ vm.runInContext(html.match(/<script id="localization">([\s\S]*?)<\/script>/)[1],ctx);
+ vm.runInContext('const setText=window.gameI18n.text;'+code+';globalThis.api={setSoundEnabled,setSoundVolume,resumeAudio,playSound,get:()=>({enabled:soundEnabled,volume:soundVolume,nodes:soundNodes.size})};',ctx);
  return {api:ctx.api,document,listeners,saved,created:()=>created,tick:()=>now+=100};
 }
 test('first visit defaults on with nonzero volume but no audio context',()=>{const x=setup();assert.equal(x.api.get().enabled,true);assert.equal(x.api.get().volume,.5);assert.equal(x.created(),0);});
