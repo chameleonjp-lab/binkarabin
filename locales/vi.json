@@ -75,5 +75,6 @@
   "countUnknown": "Chưa xác nhận được số lượt chơi.",
   "shareDescription": "Trò giải đố xếp các màu trong chai.",
   "shareClear": "{game}\nThời gian hoàn thành: {seconds} giây\nSố nước: {moves}\n{url}",
-  "shareRetire": "{game}\nBỏ cuộc: {seconds} giây / {moves} nước\n{url}"
+  "shareRetire": "{game}\nBỏ cuộc: {seconds} giây / {moves} nước\n{url}",
+  "resultUnsaved": "Không thể lưu kết quả trên thiết bị này. Kết quả có thể bị mất nếu bạn đóng màn hình này."
 }

@@ -75,5 +75,6 @@
   "countUnknown": "No se ha podido confirmar el registro de la partida.",
   "shareDescription": "Un puzle para ordenar los colores de las botellas.",
   "shareClear": "{game}\nTiempo: {seconds} s\nMovimientos: {moves}\n{url}",
-  "shareRetire": "{game}\nAbandono: {seconds} s / {moves} movimientos\n{url}"
+  "shareRetire": "{game}\nAbandono: {seconds} s / {moves} movimientos\n{url}",
+  "resultUnsaved": "No se pudo guardar el resultado en este dispositivo. Si cierras esta pantalla, podría perderse."
 }

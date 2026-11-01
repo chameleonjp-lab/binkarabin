@@ -75,5 +75,6 @@
   "countUnknown": "La registrazione della partita non è stata confermata.",
   "shareDescription": "Un rompicapo per ordinare i colori nelle bottiglie.",
   "shareClear": "{game}\nTempo: {seconds} s\nMosse: {moves}\n{url}",
-  "shareRetire": "{game}\nAbbandono: {seconds} s / {moves} mosse\n{url}"
+  "shareRetire": "{game}\nAbbandono: {seconds} s / {moves} mosse\n{url}",
+  "resultUnsaved": "Impossibile salvare il risultato su questo dispositivo. Chiudendo questa schermata potresti perderlo."
 }

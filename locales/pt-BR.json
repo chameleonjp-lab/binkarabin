@@ -75,5 +75,6 @@
   "countUnknown": "Não foi possível confirmar o registro da partida.",
   "shareDescription": "Um quebra-cabeça para organizar as cores nas garrafas.",
   "shareClear": "{game}\nTempo: {seconds} s\nJogadas: {moves}\n{url}",
-  "shareRetire": "{game}\nDesistência: {seconds} s / {moves} jogadas\n{url}"
+  "shareRetire": "{game}\nDesistência: {seconds} s / {moves} jogadas\n{url}",
+  "resultUnsaved": "Não foi possível salvar o resultado neste dispositivo. Ele pode ser perdido ao fechar esta tela."
 }

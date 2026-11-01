@@ -75,5 +75,6 @@
   "countUnknown": "Pencatatan jumlah permainan belum terkonfirmasi.",
   "shareDescription": "Game teka-teki untuk menyusun warna dalam botol.",
   "shareClear": "{game}\nWaktu penyelesaian: {seconds} detik\nLangkah: {moves}\n{url}",
-  "shareRetire": "{game}\nBerhenti: {seconds} detik / {moves} langkah\n{url}"
+  "shareRetire": "{game}\nBerhenti: {seconds} detik / {moves} langkah\n{url}",
+  "resultUnsaved": "Hasil tidak dapat disimpan di perangkat ini. Hasil mungkin hilang jika layar ini ditutup."
 }

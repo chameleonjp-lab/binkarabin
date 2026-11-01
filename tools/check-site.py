@@ -86,7 +86,7 @@ def main():
         if output == ROOT or ROOT not in output.parents or output.name != '_site':
             raise ValueError('Output must be the repository-local _site directory')
         if output.exists():
-            shutil.rmtree(output)
+            raise ValueError("Existing _site is preserved; use a fresh workspace")
         output.mkdir()
         shutil.copy2(ROOT / 'index.html', output / 'index.html')
         (output / '.nojekyll').touch()

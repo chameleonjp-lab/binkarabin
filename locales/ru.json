@@ -75,5 +75,6 @@
   "countUnknown": "Не удалось подтвердить учёт начала игры.",
   "shareDescription": "Головоломка: рассортируйте цвета по бутылкам.",
   "shareClear": "{game}\nВремя прохождения: {seconds} с\nХодов: {moves}\n{url}",
-  "shareRetire": "{game}\nИгра прервана: {seconds} с / ходов: {moves}\n{url}"
+  "shareRetire": "{game}\nИгра прервана: {seconds} с / ходов: {moves}\n{url}",
+  "resultUnsaved": "Не удалось сохранить результат на этом устройстве. Если закрыть этот экран, результат может быть потерян."
 }

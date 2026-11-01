@@ -75,5 +75,6 @@
   "countUnknown": "Die Erfassung der Partie konnte nicht bestätigt werden.",
   "shareDescription": "Ein Rätselspiel, bei dem du Farben in Flaschen sortierst.",
   "shareClear": "{game}\nZeit: {seconds} s\nZüge: {moves}\n{url}",
-  "shareRetire": "{game}\nAbbruch: {seconds} s / {moves} Züge\n{url}"
+  "shareRetire": "{game}\nAbbruch: {seconds} s / {moves} Züge\n{url}",
+  "resultUnsaved": "Dein Ergebnis konnte auf diesem Gerät nicht gespeichert werden. Wenn du diesen Bildschirm schließt, kann es verloren gehen."
 }

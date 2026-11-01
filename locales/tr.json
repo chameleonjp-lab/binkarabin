@@ -75,5 +75,6 @@
   "countUnknown": "Oyun sayısının kaydedildiği doğrulanamadı.",
   "shareDescription": "Şişelerdeki renkleri eşleştirdiğiniz bir bulmaca oyunu.",
   "shareClear": "{game}\nTamamlama süresi: {seconds} sn\nHamle: {moves}\n{url}",
-  "shareRetire": "{game}\nOyun bırakıldı: {seconds} sn / {moves} hamle\n{url}"
+  "shareRetire": "{game}\nOyun bırakıldı: {seconds} sn / {moves} hamle\n{url}",
+  "resultUnsaved": "Sonucun bu cihaza kaydedilemedi. Bu ekranı kapatırsan sonuç kaybolabilir."
 }

@@ -75,5 +75,6 @@
   "countUnknown": "The play count could not be confirmed.",
   "shareDescription": "Sort the colors in the bottles in this puzzle game.",
   "shareClear": "{game}\nClear time: {seconds} s\nMoves: {moves}\n{url}",
-  "shareRetire": "{game}\nRetired: {seconds} s / {moves} moves\n{url}"
+  "shareRetire": "{game}\nRetired: {seconds} s / {moves} moves\n{url}",
+  "resultUnsaved": "Your result could not be saved on this device. Closing this screen may lose it."
 }

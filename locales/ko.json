@@ -75,5 +75,6 @@
   "countUnknown": "플레이 횟수의 기록 여부를 확인하지 못했습니다.",
   "shareDescription": "병 속의 색을 맞추는 퍼즐 게임입니다.",
   "shareClear": "{game}\n클리어 시간: {seconds}초\n수: {moves}수\n{url}",
-  "shareRetire": "{game}\n그만둠: {seconds}초 / {moves}수\n{url}"
+  "shareRetire": "{game}\n그만둠: {seconds}초 / {moves}수\n{url}",
+  "resultUnsaved": "이 기기에 결과를 저장하지 못했습니다. 이 화면을 닫으면 결과가 사라질 수 있습니다."
 }

@@ -75,5 +75,6 @@
   "countUnknown": "ยังยืนยันจำนวนครั้งที่เล่นไม่ได้",
   "shareDescription": "เกมปริศนาเรียงสีในขวด",
   "shareClear": "{game}\nเวลาที่ใช้: {seconds} วินาที\nจำนวนตา: {moves}\n{url}",
-  "shareRetire": "{game}\nยอมแพ้: {seconds} วินาที / {moves} ตา\n{url}"
+  "shareRetire": "{game}\nยอมแพ้: {seconds} วินาที / {moves} ตา\n{url}",
+  "resultUnsaved": "ไม่สามารถบันทึกผลลงในอุปกรณ์นี้ได้ หากปิดหน้าจอนี้ ผลอาจสูญหาย"
 }

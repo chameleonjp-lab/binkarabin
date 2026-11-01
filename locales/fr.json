@@ -75,5 +75,6 @@
   "countUnknown": "L'enregistrement de la partie n'a pas pu être confirmé.",
   "shareDescription": "Un jeu de réflexion pour trier les couleurs dans les bouteilles.",
   "shareClear": "{game}\nTemps : {seconds} s\nCoups : {moves}\n{url}",
-  "shareRetire": "{game}\nAbandon : {seconds} s / {moves} coups\n{url}"
+  "shareRetire": "{game}\nAbandon : {seconds} s / {moves} coups\n{url}",
+  "resultUnsaved": "Le résultat n’a pas pu être enregistré sur cet appareil. Fermer cet écran risque de le perdre."
 }

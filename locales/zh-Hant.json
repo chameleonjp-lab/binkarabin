@@ -75,5 +75,6 @@
   "countUnknown": "遊玩次數紀錄尚未確認。",
   "shareDescription": "將瓶子裡的顏色歸類的益智遊戲。",
   "shareClear": "{game}\n完成時間：{seconds}秒\n步數：{moves}步\n{url}",
-  "shareRetire": "{game}\n退出：{seconds}秒 / {moves}步\n{url}"
+  "shareRetire": "{game}\n退出：{seconds}秒 / {moves}步\n{url}",
+  "resultUnsaved": "無法在此裝置上儲存結果。關閉此畫面可能會遺失結果。"
 }
