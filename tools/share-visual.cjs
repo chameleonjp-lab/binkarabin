@@ -9,7 +9,7 @@ async function visible(page,selector){
   const r=el.getBoundingClientRect(),epsilon=1;let opacity=1,unclipped=true;const ancestors=[];
   for(let n=el;n;n=n.parentElement){
    const style=getComputedStyle(n);opacity*=Number(style.opacity);
-   if(n===el)continue;const p=n.getBoundingClientRect(),left=p.left+n.clientLeft,top=p.top+n.clientTop;ancestors.push({tag:n.tagName,id:n.id,overflowX:style.overflowX,overflowY:style.overflowY,left,top,w:n.clientWidth,h:n.clientHeight,scrollTop:n.scrollTop,scrolling:n===document.scrollingElement});
+   if(n===el)continue;const p=n.getBoundingClientRect(),left=n===document.scrollingElement?0:p.left+n.clientLeft,top=n===document.scrollingElement?0:p.top+n.clientTop;ancestors.push({tag:n.tagName,id:n.id,overflowX:style.overflowX,overflowY:style.overflowY,left,top,w:n.clientWidth,h:n.clientHeight,scrollTop:n.scrollTop,scrolling:n===document.scrollingElement});
    if(/hidden|clip|scroll|auto/.test(style.overflowX))unclipped=unclipped&&r.left>=left-epsilon&&r.right<=left+n.clientWidth+epsilon;
    if(/hidden|clip|scroll|auto/.test(style.overflowY))unclipped=unclipped&&r.top>=top-epsilon&&r.bottom<=top+n.clientHeight+epsilon;
   }
@@ -26,6 +26,7 @@ try{
  await page.addInitScript(()=>{localStorage.setItem('binkarabin:sound','off');localStorage.setItem('binkarabinName','');});await page.goto(origin+'/');
  const home=page.locator('#shareHomeBtn');await home.evaluate(e=>e.style.display='none');await assert.rejects(()=>visible(page,'#shareHomeBtn'));await home.evaluate(e=>e.style.removeProperty('display'));await home.evaluate(e=>e.parentElement.style.opacity='0');await assert.rejects(()=>visible(page,'#shareHomeBtn'));await home.evaluate(e=>e.parentElement.style.removeProperty('opacity'));
  await home.evaluate(e=>{const w=document.createElement('div');w.id='clip-negative';w.style.cssText='overflow:hidden;flex-shrink:0;height:'+(e.getBoundingClientRect().height-8)+'px';e.before(w);w.append(e);});await assert.rejects(()=>visible(page,'#shareHomeBtn'));await home.evaluate(e=>e.parentElement.replaceWith(e));await visible(page,'#shareHomeBtn');
+ await home.evaluate(e=>e.style.cssText='position:fixed;top:-8px;left:20px;width:180px;z-index:9999');await assert.rejects(()=>visible(page,'#shareHomeBtn'));await home.evaluate(e=>e.style.cssText='');await visible(page,'#shareHomeBtn');
  for(const phase of ['home','clear','retire']){
   if(phase!=='home'){await page.evaluate(retired=>{localStorage.setItem(RESULT_KEY,JSON.stringify({playerName:'',play:null,elapsedMs:12345,moveCount:60,retired,submitStatus:'guest',countStatus:'countRecorded'}));if(!restoreResult())throw Error('fixture restore failed')},phase==='retire');assert.equal(await page.evaluate(()=>state.mode),'RESULT');assert.equal(await page.evaluate(()=>state.play),null);}
   const selector=phase==='home'?'#shareHomeBtn':'#shareResultBtn';

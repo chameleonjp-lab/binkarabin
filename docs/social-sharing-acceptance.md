@@ -18,3 +18,6 @@
 - 正式共有/canonicalの https://chameleonjp.codeberg.page/binkarabin/ を維持。GitHub画像URLは既存移行先の準備で、Codeberg更新・実験場切替・公開Xカード反映は別途未確認。
 - 限定作業branch検証を追加し、Pages artifact/deployはmain pushだけへ明示。権限/runner/Pages設定は変更しない。
 - 本人iPhone Safari実機は未確認。マージ後に正しい配信commit/PNG/縦横共有を確認。復元は今回差分revert PR、利用者記録の消去不要。
+
+## 初回可視検査の root geometry 是正
+初回CIはportrait成功後、landscapeのroot scrollY=323で検査が失敗。診断でXはviewport内 y=176..225/中心hit正常、HTMLのgetBoundingClientRect.top=-323 とclientHeight=402を足し合わせた検査側座標誤りと確認。CSSOM Viewのroot clientHeight/clientWidthはviewport寸法の規則に基づきdocument.scrollingElementだけclip原点を0とする（https://drafts.csswg.org/cssom-view/#dom-element-clientheight 、2026-11-02確認）。製品CSSは変更せず、通常overflow祖先clipとviewport全rect検査は保持。scrolledroot positive/通常clip negative/画面端欠け negativeの3unit（旧1失敗→全成功）、実browser部分clipとfixed上端欠け対照を追加。失敗画像は故障注入対照と本受入失敗を区別する。
