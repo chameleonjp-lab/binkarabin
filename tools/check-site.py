@@ -81,6 +81,10 @@ def main():
                 checked += 1
     if checked == 0:
         raise ValueError('No executable game script found')
+    preview = ROOT / 'assets/social-preview.png'
+    data = preview.read_bytes()
+    if data[:8] != b'\x89PNG\r\n\x1a\n' or int.from_bytes(data[16:20], 'big') != 1200 or int.from_bytes(data[20:24], 'big') != 630:
+        raise ValueError('Invalid fixed social preview PNG')
     if options.out:
         output = options.out.resolve()
         if output == ROOT or ROOT not in output.parents or output.name != '_site':
@@ -89,8 +93,12 @@ def main():
             raise ValueError("Existing _site is preserved; use a fresh workspace")
         output.mkdir()
         shutil.copy2(ROOT / 'index.html', output / 'index.html')
+        (output / 'assets').mkdir()
+        shutil.copy2(preview, output / 'assets/social-preview.png')
+        if (output / 'assets/social-preview.png').read_bytes() != data:
+            raise ValueError('Staged preview bytes differ')
         (output / '.nojekyll').touch()
-    print(f'Validated index.html: {checked} JavaScript blocks; single-file public release')
+    print(f'Validated index.html: {checked} JavaScript blocks; single HTML + fixed PNG public release')
 
 
 if __name__ == '__main__':
