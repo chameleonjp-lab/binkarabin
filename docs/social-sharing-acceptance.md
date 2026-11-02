@@ -21,3 +21,6 @@
 
 ## 初回可視検査の root geometry 是正
 初回CIはportrait成功後、landscapeのroot scrollY=323で検査が失敗。診断でXはviewport内 y=176..225/中心hit正常、HTMLのgetBoundingClientRect.top=-323 とclientHeight=402を足し合わせた検査側座標誤りと確認。CSSOM Viewのroot clientHeight/clientWidthはviewport寸法の規則に基づきdocument.scrollingElementだけclip原点を0とする（https://drafts.csswg.org/cssom-view/#dom-element-clientheight 、2026-11-02確認）。製品CSSは変更せず、通常overflow祖先clipとviewport全rect検査は保持。scrolledroot positive/通常clip negative/画面端欠け negativeの3unit（旧1失敗→全成功）、実browser部分clipとfixed上端欠け対照を追加。失敗画像は故障注入対照と本受入失敗を区別する。
+
+## 空ランキング案内の読みやすさ
+新CI画像で「まだ記録がありません」が通常参加者行の先頭2.2rem列だけに入り縦に細く折り返す既存問題を実見。`li[data-i18n="noRecords"]` だけblock化し、通常順位/名前/点数3列は保持。取得失敗は別の `rankingReadStatus` 表示であり、表示経路を変更しない。CSS対照は旧失敗→新成功、各言語/方向で空messageのblock表示と通常参加者の3span/gridを検査し空表示へ復元する。X非表示原因とは別。
