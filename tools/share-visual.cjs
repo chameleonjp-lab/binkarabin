@@ -6,16 +6,17 @@ const origin='http://127.0.0.1:4199',publicUrl='https://chameleonjp.codeberg.pag
 async function visible(page,selector){
  const e=page.locator(selector);assert.equal(await e.isVisible(),true);await e.scrollIntoViewIfNeeded();
  const a=await e.evaluate(el=>{
-  const r=el.getBoundingClientRect(),epsilon=1;let opacity=1,unclipped=true;
+  const r=el.getBoundingClientRect(),epsilon=1;let opacity=1,unclipped=true;const ancestors=[];
   for(let n=el;n;n=n.parentElement){
    const style=getComputedStyle(n);opacity*=Number(style.opacity);
-   if(n===el)continue;const p=n.getBoundingClientRect(),left=p.left+n.clientLeft,top=p.top+n.clientTop;
+   if(n===el)continue;const p=n.getBoundingClientRect(),left=p.left+n.clientLeft,top=p.top+n.clientTop;ancestors.push({tag:n.tagName,id:n.id,overflowX:style.overflowX,overflowY:style.overflowY,left,top,w:n.clientWidth,h:n.clientHeight,scrollTop:n.scrollTop,scrolling:n===document.scrollingElement});
    if(/hidden|clip|scroll|auto/.test(style.overflowX))unclipped=unclipped&&r.left>=left-epsilon&&r.right<=left+n.clientWidth+epsilon;
    if(/hidden|clip|scroll|auto/.test(style.overflowY))unclipped=unclipped&&r.top>=top-epsilon&&r.bottom<=top+n.clientHeight+epsilon;
   }
   const hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
-  return{w:r.width,h:r.height,opacity,unclipped,viewport:r.left>=-epsilon&&r.top>=-epsilon&&r.right<=innerWidth+epsilon&&r.bottom<=innerHeight+epsilon,hit:hit===el||el.contains(hit),pointer:getComputedStyle(el).pointerEvents};
+  return{rect:{x:r.x,y:r.y,w:r.width,h:r.height},ancestors,w:r.width,h:r.height,opacity,unclipped,viewport:r.left>=-epsilon&&r.top>=-epsilon&&r.right<=innerWidth+epsilon&&r.bottom<=innerHeight+epsilon,hit:hit===el||el.contains(hit),pointer:getComputedStyle(el).pointerEvents};
  });
+ if(!a.unclipped||!a.viewport){console.error('VISIBILITY_DIAGNOSTIC',JSON.stringify({selector,metrics:a}));fs.mkdirSync(path.join(root,'test-artifacts'),{recursive:true});await page.screenshot({path:path.join(root,'test-artifacts','visibility-failure.png'),fullPage:true});}
  assert.ok(a.w>=44&&a.h>=44,selector+' target');assert.ok(a.opacity>0);assert.ok(a.viewport,selector+' full rect inside viewport');assert.ok(a.unclipped,selector+' full rect inside overflow ancestors');assert.notEqual(a.pointer,'none');assert.equal(a.hit,true);
 }
 async function main(){const engine=process.env.BROWSER_ENGINE||'chromium';assert.ok(['chromium','webkit'].includes(engine));const browser=await engines[engine].launch({headless:true}),context=await browser.newContext({viewport:{width:402,height:874},isMobile:true,hasTouch:true,serviceWorkers:'block',reducedMotion:'reduce'}),page=await context.newPage();let scoreAttempts=0;const intents=[],errors=[];page.on('pageerror',e=>errors.push(e.message));
