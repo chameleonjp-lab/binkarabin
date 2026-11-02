@@ -78,3 +78,6 @@ ACK検証追補: accepted=falseの明示的な拒否のみ再送対象外とす�
 音声のnative interruptedは古いvoiceを停止し、stop/disconnect例外でも個別後片付けを行う。設定off/0、既存音の周波数/長さ/音量は維持。CIは公開リポジトリ標準runnerでChromiumとWebKitを検査する。PRではPages upload/deployしない。既存 `_site` を無断削除せず、新しい作業領域で生成する。
 
 対象条件・実装・ローカル検査・CI・本番・実機は別ゲート。normal RPC本番未適用、名前依存identityの本人判断、厳密な別参加者30名、別origin保存移行、正式GitHubURL切替/移行先機能同等、Pages Source設定、母語/実音/長時間/iPhone実機、本番マージ後確認は未完了。共通仕様13項目全完了を意味しない。PRの最終headとCIを併せて確認すること。
+
+## 2026-11-02 09:41 JST 受領境界の後続修正
+normal RPCのfirst/best/countをSQL integer範囲、countを正数に検証し、確定済み昇順で今回提出点より大きいbestも拒否します。異常ACKはpendingのまま再読込後も同UUID/内容で再送。first0や合法な過去負数を維持し、現在game上限を過去履歴へ遡及しません。inline実装とunitコピーを一致確認し、15回帰を追加。新headのCI結果はPR本文へ記録します。DB/公開/採点/名前・ID変更なし、identity/実機等の残件は維持。
