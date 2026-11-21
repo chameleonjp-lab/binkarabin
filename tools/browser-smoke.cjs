@@ -21,7 +21,7 @@ try{
   await page.selectOption('#languageSelect',lang);assert.equal(await page.locator('#shareHomeBtn').textContent(),catalogs[lang].shareX);assert.equal(await page.locator('#nameDisclosure').textContent(),catalogs[lang].nameDisclosure);
   for(const viewport of [{width:402,height:874},{width:874,height:402}]){await page.setViewportSize(viewport);assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth),true,lang+' overflow');}
   await page.click('#ruleBtn');assert.equal(await page.locator('[data-i18n="rule4"]').textContent(),catalogs[lang].rule4);await page.click('#ruleBackBtn');
-  await page.click('#shareHomeBtn');assert.ok((await page.locator('#commonShareText').inputValue()).includes('https://chameleonjp.codeberg.page/binkarabin/'));await page.click('#commonShareClose');
+  await page.click('#shareHomeBtn');assert.ok((await page.locator('#commonShareText').inputValue()).includes('https://chameleonjp-lab.github.io/binkarabin/'));await page.click('#commonShareClose');
  }
  await page.setViewportSize({width:402,height:874});await page.selectOption('#languageSelect','en');
  async function begin(name){await page.fill('#playerName',name);await page.click('#startBtn');await page.evaluate(()=>{clearTimeout(state.countdownTimerId);state.mode='PLAYING';state.startTime=performance.now()-12345;state.elapsedMs=12345;setCountdownOverlay('');setStatus('sourcePrompt');});}

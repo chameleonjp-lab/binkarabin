@@ -2,7 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
 const engines=require(process.env.PLAYWRIGHT_MODULE||'playwright'),root=path.resolve(__dirname,'..');
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8'),catalogs=JSON.parse(html.match(/<script id="locale-catalogs" type="application\/json">([\s\S]*?)<\/script>/)[1]);
-const origin='http://127.0.0.1:4199',publicUrl='https://chameleonjp.codeberg.page/binkarabin/';
+const origin='http://127.0.0.1:4199',publicUrl='https://chameleonjp-lab.github.io/binkarabin/';
 async function visible(page,selector){
  const e=page.locator(selector);assert.equal(await e.isVisible(),true);await e.scrollIntoViewIfNeeded();
  const a=await e.evaluate(el=>{
